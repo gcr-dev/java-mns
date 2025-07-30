@@ -1,26 +1,22 @@
 package org.example;
 
-import java.util.UUID;
-
 public class User {
-    private final UUID id;
-    private String firstName;
+    private static int counter;
+    private int id;
+    private String name;
 
-    public User(String firstName) {
-        this.id = UUID.randomUUID();
-        this.firstName = firstName;
+    static {
+        counter = 0;
     }
 
-    public UUID getId() {
-        return id;
+    {
+        id = ++counter;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public User(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return firstName + " (id: " + id + ")";
-    }
+    public int getId() { return id; }
+    public String getName() { return name; }
 }

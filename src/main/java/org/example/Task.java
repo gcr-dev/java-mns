@@ -1,27 +1,29 @@
 package org.example;
 
-import java.util.UUID;
-
 public class Task {
-    private final UUID id;
-    protected String title;
-    protected String description;
-    protected boolean done;
-    protected User user;
+    private static int counter;
+    private int id;
+    private String title;
+    private User user;
+    private String description;
+    
+
+    static {
+        counter = 0;
+    }
+
+    {
+        id = ++counter;
+    }
 
     public Task(String title, String description, User user) {
-        this.id = UUID.randomUUID();
         this.title = title;
         this.description = description;
         this.user = user;
-        this.done = false;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public String toString() {
-        return (done ? "[x] " : "[ ] ") + title + ": " + description + " (id: " + id + ")";
-    }
+    public int getId() { return id; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; } 
+    public User getUser() { return user; }
 }
