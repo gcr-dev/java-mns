@@ -1,0 +1,14 @@
+Implémenter avec SpringBoot une application Web (par exemple TODO List) répondant aux critères minimum suivants:
+
+- L'application démarre correctement
+- L'application se connecte à une base de donnée (H2 auto importée ou autre)
+- L'application gère au moins deux modèles de données (par exemple Users et Tasks) avec au moins une jointure entre les deux.
+- La base de données contient des données initiales
+- L'application est capable d'afficher sur des URLs spécifiques: les listes de chaque modèles, et le détail d'un enregistrement en particulier (ie: /tasks, /users et /tasks/1 /users/1)
+
+Les critères facultatifs suivants peuvent être implémentés
+- Attention particulière au front-end (framework CSS)
+- Fonctions d'ajout, de modification et de suppression
+- APIs REST
+- SpringSecurity avec authentification des utilisateurs
+- Dockerisation / DevOps / Déploiement effectif.

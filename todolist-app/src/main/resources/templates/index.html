@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application de Gestion de Tâches</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Gestion de Tâches</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/users">Utilisateurs</a>
+                <a class="nav-link" href="/tasks">Tâches</a>
+                <a class="nav-link" href="/admin" sec:authorize="hasRole('ADMIN')">Admin</a>
+                <span class="navbar-text text-light mx-3" sec:authorize="isAuthenticated()">
+                    Connecté en tant que : <span sec:authentication="name"></span>
+                </span>
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Déconnexion</button>
+                </form>
+                <a sec:authorize="!isAuthenticated()" href="/login" class="btn btn-outline-light btn-sm">Connexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-5">Bienvenue dans l'Application de Gestion de Tâches</h1>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Utilisateurs</h5>
+                        <p class="display-4" th:text="${userCount}">0</p>
+                        <a href="/users" class="btn btn-primary">Voir tous les utilisateurs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Tâches</h5>
+                        <p class="display-4" th:text="${taskCount}">0</p>
+                        <a href="/tasks" class="btn btn-primary">Voir toutes les tâches</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

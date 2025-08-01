@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tâches - Application de Gestion de Tâches</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Gestion de Tâches</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/users">Utilisateurs</a>
+                <a class="nav-link active" href="/tasks">Tâches</a>
+                <a class="nav-link" href="/admin" sec:authorize="hasRole('ADMIN')">Admin</a>
+                <span class="navbar-text text-light mx-3" sec:authorize="isAuthenticated()">
+                    Connecté en tant que : <span sec:authentication="name"></span>
+                </span>
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Déconnexion</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Toutes les tâches</h1>
+            <a href="/tasks/new" class="btn btn-success">Nouvelle tâche</a>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titre</th>
+                        <th>Assignée à</th>
+                        <th>Priorité</th>
+                        <th>Statut</th>
+                        <th>Créée le</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="task : ${tasks}">
+                        <td th:text="${task.id}">1</td>
+                        <td th:text="${task.title}">Task Title</td>
+                        <td th:text="${task.user.name}">User Name</td>
+                        <td>
+                            <span th:class="${'badge bg-' + (task.priority.name() == 'HIGH' ? 'danger' : (task.priority.name() == 'MEDIUM' ? 'warning' : 'secondary'))}"
+                                  th:text="${#messages.msg('task.priority.' + task.priority)}">MEDIUM</span>
+                        </td>
+                        <td>
+                            <span th:class="${'badge bg-' + (task.status.name() == 'COMPLETED' ? 'success' : (task.status.name() == 'IN_PROGRESS' ? 'primary' : 'secondary'))}"
+                                  th:text="${#messages.msg('task.status.' + task.status)}">TODO</span>
+                        </td>
+                        <td th:text="${#temporals.format(task.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/tasks/{id}(id=${task.id})}" class="btn btn-sm btn-info">Voir</a>
+                                <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-sm btn-warning">Modifier</a>
+                                <form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post" class="d-inline" 
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-3">
+            <a href="/" class="btn btn-secondary">Retour à l'accueil</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
